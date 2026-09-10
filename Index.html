@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCERT Books Library</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        body { background-color: #f0f2f5; padding: 15px; }
+        header { background: #1a73e8; color: white; text-align: center; padding: 18px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        header h2 { font-size: 22px; margin-bottom: 4px; }
+        header p { font-size: 14px; opacity: 0.9; }
+        
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .card { background: white; color: #1a73e8; border: 2px solid #1a73e8; padding: 20px; border-radius: 10px; text-align: center; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .card:active { background: #1a73e8; color: white; }
+        
+        #book-view { display: none; }
+        .back-btn { background: #d93025; color: white; border: none; padding: 10px 16px; border-radius: 6px; margin-bottom: 15px; font-weight: bold; cursor: pointer; font-size: 14px; }
+        .book-card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        .book-title { font-size: 16px; color: #333; font-weight: 600; }
+        .btn-read { background: #1e8e3e; color: white; text-decoration: none; padding: 8px 14px; border-radius: 5px; font-weight: bold; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>NCERT Books Library</h2>
+        <p>Class 1st to 12th Free Books</p>
+    </header>
+
+    <!-- Main Classes View -->
+    <div id="class-grid" class="grid"></div>
+
+    <!-- Books View -->
+    <div id="book-view">
+        <button class="back-btn" onclick="goBack()">← Back to Classes</button>
+        <h3 id="class-title" style="margin-bottom: 15px; color: #333;"></h3>
+        <div id="books-container"></div>
+    </div>
+
+    <script>
+        // PDF Links Database
+        const books = {
+            1: [
+                { name: "Maths - Class 1", url: "https://ncert.nic.in/textbook/pdf/aemh101.pdf" }
+            ],
+            10: [
+                { name: "Science - Class 10", url: "https://ncert.nic.in/textbook/pdf/jesc101.pdf" },
+                { name: "Mathematics - Class 10", url: "https://ncert.nic.in/textbook/pdf/jemh101.pdf" }
+            ],
+            12: [
+                { name: "Physics Part 1 - Class 12", url: "https://ncert.nic.in/textbook/pdf/leph101.pdf" }
+            ]
+        };
+
+        // Class 1 to 12 Buttons Generation
+        const grid = document.getElementById('class-grid');
+        for (let i = 1; i <= 12; i++) {
+            let div = document.createElement('div');
+            div.className = 'card';
+            div.innerText = 'Class ' + i;
+            div.onclick = () => showBooks(i);
+            grid.appendChild(div);
+        }
+
+        // Show Books Function
+        function showBooks(classNum) {
+            document.getElementById('class-grid').style.display = 'none';
+            document.getElementById('book-view').style.display = 'block';
+            document.getElementById('class-title').innerText = 'Books for Class ' + classNum;
+            
+            const container = document.getElementById('books-container');
+            container.innerHTML = '';
+
+            if (books[classNum]) {
+                books[classNum].forEach(b => {
+                    container.innerHTML += `
+                        <div class="book-card">
+                            <span class="book-title">${b.name}</span>
+                            <a href="${b.url}" target="_blank" class="btn-read">Open PDF</a>
+                        </div>
+                    `;
+                });
+            } else {
+                container.innerHTML = '<p style="color:#666; padding: 10px;">Is class ki books jald hi add hongi.</p>';
+            }
+        }
+
+        // Back Button Function
+        function goBack() {
+            document.getElementById('class-grid').style.display = 'grid';
+            document.getElementById('book-view').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
